@@ -33,3 +33,13 @@ names.forEach( name=>console.log( name.toUpperCase() ) );
 console.log(names);
 names.sort();
 console.log(names);
+
+
+// map
+const namesUpper = names.map( name => name.toUpperCase() );
+console.log(namesUpper);
+
+// reduce
+const numeros = [1,2,3,4,5,6,7,8,9];
+const total = numeros.reduce( (acum, numero)=>acum+numero, 0 );
+console.log(total);
