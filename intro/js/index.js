@@ -26,3 +26,10 @@ superior( (a,b)=>{
     let c = a + b;
     return c * 2;
 }, 10, 20 );
+
+const names = ['Jesus', 'Miriam', 'Ramiro', 'Geralt'];
+names.forEach( name=>console.log( name ) );
+names.forEach( name=>console.log( name.toUpperCase() ) );
+console.log(names);
+names.sort();
+console.log(names);
