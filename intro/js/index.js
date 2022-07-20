@@ -72,3 +72,21 @@ const drink2 = new Drink2('agua');
 
 console.log(drink1.info());
 console.log(drink2.info());
+
+
+// Herencia
+class Coke extends Drink{
+    constructor( name, sugar ){
+        super(name);
+        this.sugar = sugar;
+    }
+
+    info(){
+        return super.info() + `, mas  ${this.sugar} de azucar`;
+    }
+
+}
+
+const drink3 = new Coke('water love', 9.5);
+console.log( drink3.info() );
+
