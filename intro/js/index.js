@@ -43,3 +43,32 @@ console.log(namesUpper);
 const numeros = [1,2,3,4,5,6,7,8,9];
 const total = numeros.reduce( (acum, numero)=>acum+numero, 0 );
 console.log(total);
+
+
+
+// clases
+class Drink {
+
+    constructor(name){
+        this.name = name;
+    }
+
+    info(){
+        return `La bebida es ${this.name}`;
+    }
+}
+
+
+// Funcional
+function Drink2(name){
+    this.name = name;
+    this.info = function(){
+        return `La bebida es ${this.name}`;
+    }
+}
+
+const drink1 = new Drink('agua');
+const drink2 = new Drink2('agua');
+
+console.log(drink1.info());
+console.log(drink2.info());
