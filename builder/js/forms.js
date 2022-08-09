@@ -116,3 +116,33 @@ class FormDirector{
 
 }
 
+// builder 1
+const frmBuilder = new FormBuilder();
+const formPeople = frmBuilder.setAction("add.php")
+                                .setText("firstName", "Nombre")
+                                .setText("lastName", "Apellidos")
+                                .setCheckBox("drinker", "Es bebedor?")
+                                .setColor("favoriteColor", "Color favorito")
+                                .build();
+form1.innerHTML = formPeople.getContent();
+// builder 2
+const formMail = frmBuilder.setAction("send.php")
+    .setText("name", "Nombre")  
+    .setEmail("email", "Correo electrónico")
+    .build();
+form2.innerHTML = formMail.getContent();
+
+// director 
+// creación de form 1 con director
+const director = new FormDirector(frmBuilder);
+director.createPeopleForm();
+form3.innerHTML = frmBuilder.build().getContent();
+
+// creación de form 2 con director
+director.createPeopleForm();
+form4.innerHTML = frmBuilder.build().getContent();
+
+// creación de form 3 con director
+director.createContactForm();
+form5.innerHTML = frmBuilder.build().getContent();
+
