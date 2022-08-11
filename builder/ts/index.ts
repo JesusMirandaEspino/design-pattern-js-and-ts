@@ -117,3 +117,49 @@ class NormalPersonBuilder implements PersonBuilder{
 }
 
 
+// director
+class PersonDirector{
+    private personBuilder: PersonBuilder;
+
+    constructor(personBuilder: PersonBuilder){
+        this.personBuilder = personBuilder;
+    }
+
+    setPersonBuilder(personBuilder: PersonBuilder){
+        this.personBuilder = personBuilder;
+    }
+
+    createSimplePerson(name: string, lastName: string){
+        this.personBuilder.setName(name)
+            .setLastName(lastName);
+    }
+}
+
+// creación 1
+
+const personBuilder = new NormalPersonBuilder();
+
+const hector = personBuilder.setName("Héctor")
+                            .setLastName("De León")
+                            .addHobby("Comer")
+                            .addHobby("Dormir")
+                            .build();
+console.log(hector);
+
+// creación 2
+const juan = personBuilder.setName("Juan")
+                            .setLastName("Pérez")
+                            .setAge(20)
+                            .addHobby("Comer")
+                            .setCountry("México")
+                            .setCity("Guadalajara")
+                            .addHobby("Cerveza")
+                            .build();
+console.log(juan);
+
+// creación con director
+const director = new PersonDirector(personBuilder);
+director.createSimplePerson("John","Cena");
+const johnCena = personBuilder.build();
+
+console.log(johnCena);
