@@ -61,3 +61,6 @@ doc.setState(new WithContentState());
 console.log(doc.state);
 doc.write("No que no");
 console.log(doc.content);
+
+
+
