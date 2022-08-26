@@ -1,165 +1,87 @@
-// Product
-class Person{
+interface ListImplementor {
+    elements: number[];
 
-    private name: string;
-    private lastName: string;
-    private age: number;
-    private country: string;
-    private city: string;
-    private hobbies: string[];
+    add(number: number): void;
+    getElements(): number[];
+}
 
-    constructor(name: string, 
-        lastName:string, 
-        age: number, 
-        country: string, 
-        city: string, 
-        hobbies: string[]){
+/** primera implementacion de Implementador **/
+class OrderedList implements ListImplementor{
+    elements: number[] = [];
 
-            this.name= name;
-            this.lastName= lastName;
-            this.age = age;
-            this.country= country;
-            this.city = city;
-            this.hobbies = hobbies;
+    public add(number: number): void{
+        this.elements.push(number);
+        this.elements.sort();
     }
 
-    getFullName(): string{
-        return this.name + " " + this.lastName;
+    public getElements(): number[]{
+        return this.elements;
+    }
+}
+/** segunda implementacion de Implementador **/
+class UniqueList implements ListImplementor{
+    elements: number[] = [];
+    
+    public add(number: number): void {
+        if(!this.elements.includes(number)){
+            this.elements.push(number);
+        }
+    }
+
+    public getElements(): number[]{
+        return this.elements;
     }
 }
 
-// interface Builder
-interface PersonBuilder{
-    name: string;
-    lastName: string;
-    age: number;
-    country: string;
-    city: string;
-    hobbies: string[];
-
-    setName(name: string): PersonBuilder;
-    setLastName(lastName: string): PersonBuilder;
-    setAge(age: number): PersonBuilder;
-    setCountry(country: string): PersonBuilder;
-    setCity(city: string): PersonBuilder;
-    addHobby(hobby: string): PersonBuilder;
-    build(): Person;
+interface DataAbstraction {
+    implementor: ListImplementor;
+    add(number: number): void;
+    get(): number[];
+    operation(fn: (n: number) => number): number[];
 }
 
-// ConcreteBuilder
-class NormalPersonBuilder implements PersonBuilder{
-    name: string;
-    lastName: string;
-    age: number;
-    country: string;
-    city: string;
-    hobbies: string[];
-
-    constructor(){
-        this.name = "";
-        this.lastName = "";
-        this.age = 0;
-        this.country = "";
-        this.city = "";
-        this.hobbies = [];
+/** clase refinada que implementa la abstraccion **/
+class DataRefinedAbstraction implements DataAbstraction{
+    implementor: ListImplementor;
+    constructor(implementor: ListImplementor){
+        this.implementor = implementor;
+    }
+    public add(number: number): void{
+        this.implementor.add(number);
     }
 
-    reset(): void{
-        this.name = "";
-        this.lastName = "";
-        this.age = 0;
-        this.country = "";
-        this.city = "";
-        this.hobbies = [];
+    public get(): number[]{
+        return this.implementor.getElements();
     }
 
-    setName(name: string): PersonBuilder{
-        this.name = name;
-        return this;
-    }
-
-    setLastName(lastName: string): PersonBuilder{
-        this.lastName = lastName;
-        return this;
-    }
-
-    setAge(age: number): PersonBuilder{
-        this.age = age;
-        return this;
-    }
-
-    setCountry(country: string): PersonBuilder{
-        this.country = country;
-        return this;
-    }
-    setCity(city: string): PersonBuilder{
-        this.city = city;
-        return this;
-    }
-
-    addHobby(hobby: string): PersonBuilder{
-        this.hobbies.push(hobby);
-        return this;
-    }
-
-    build(): Person{
-        const person = new Person(
-            this.name,
-            this.lastName,
-            this.age,
-            this.country,
-            this.city,
-            this.hobbies
-        );
-        this.reset();
-        return person;
+    public operation(fn: (n: number) => number): number[]{
+        return this.implementor.getElements().map(fn)
     }
 }
 
 
-// director
-class PersonDirector{
-    private personBuilder: PersonBuilder;
+const uniqueData = new DataRefinedAbstraction(new UniqueList());
+const orderedData = new DataRefinedAbstraction(new OrderedList());
+uniqueData.add(3);
+uniqueData.add(3);
+uniqueData.add(1);
+uniqueData.add(1);
+uniqueData.add(2);
+console.log(uniqueData.get());
+orderedData.add(3);
+orderedData.add(3);
+orderedData.add(1);
+orderedData.add(1);
+orderedData.add(2);
+console.log(orderedData.get());
 
-    constructor(personBuilder: PersonBuilder){
-        this.personBuilder = personBuilder;
-    }
+const uniqueItems = uniqueData.operation((e: number)=>e*2);
+const orderedItems = orderedData.operation((e: number)=>e*2);
 
-    setPersonBuilder(personBuilder: PersonBuilder){
-        this.personBuilder = personBuilder;
-    }
 
-    createSimplePerson(name: string, lastName: string){
-        this.personBuilder.setName(name)
-            .setLastName(lastName);
-    }
-}
+console.log(uniqueItems);
+console.log(orderedItems);
 
-// creación 1
 
-const personBuilder = new NormalPersonBuilder();
 
-const hector = personBuilder.setName("Héctor")
-                            .setLastName("De León")
-                            .addHobby("Comer")
-                            .addHobby("Dormir")
-                            .build();
-console.log(hector);
 
-// creación 2
-const juan = personBuilder.setName("Juan")
-                            .setLastName("Pérez")
-                            .setAge(20)
-                            .addHobby("Comer")
-                            .setCountry("México")
-                            .setCity("Guadalajara")
-                            .addHobby("Cerveza")
-                            .build();
-console.log(juan);
-
-// creación con director
-const director = new PersonDirector(personBuilder);
-director.createSimplePerson("John","Cena");
-const johnCena = personBuilder.build();
-
-console.log(johnCena);
